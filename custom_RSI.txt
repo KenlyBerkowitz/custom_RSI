@@ -1,0 +1,25 @@
+// This script changes the colors of the RSI background and adds a 50% line.
+// Please customize to your liking.
+
+//@version=4
+study(title="Relative Strength Index", shorttitle="RSI", format=format.price, precision=2, resolution="")
+
+
+
+len = input(14, minval=1, title="Length")
+src = input(close, "Source", type = input.source)
+up = rma(max(change(src), 0), len)
+down = rma(-min(change(src), 0), len)
+rsi = down == 0 ? 100 : up == 0 ? 0 : 100 - (100 / (1 + up / down))
+
+
+
+band1 = hline(70, "Upper Band", color=#2d7f1670, linestyle = hline.style_solid)
+band0 = hline(30, "Lower Band", color=#7f162d75, linestyle = hline.style_solid)
+band2 = hline(50, "Middle Band", color=#5a78fc60, linestyle = hline.style_solid)
+
+fill(band1, band2, color=#21c6ae, transp=93, title="Background")
+fill(band2, band0, color=#e86a9c, transp=93, title="Background")
+plot(rsi, "RSI", color=#90425f)
+
+
